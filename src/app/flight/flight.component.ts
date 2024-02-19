@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import Globe from 'globe.gl';
 import indexBy from 'index-array-by';
 import * as d3 from 'd3';
+import { Router } from '@angular/router';
+
+import { Arc } from '../models/arc';
 
 // Define interfaces for Airport and Route
 interface Airport {
@@ -54,14 +57,17 @@ interface FlatResult {
 export class FlightComponent implements OnInit {
   countryName: string = ''; // Variable to store the country name entered by the user
 
-  constructor() { }
+  storedArcs : Arc[] = []; 
+
+
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.initializeGlobe(this.countryName);
   }
 
   private initializeGlobe(countryName : string): void {
-    //const COUNTRY: string = 'Canada';
+    localStorage.clear();
     const OPACITY: number = 0.50;
 
     const globeContainer: HTMLElement | null = document.getElementById('globeViz');
@@ -89,8 +95,13 @@ export class FlightComponent implements OnInit {
   .pointColor(() => 'orange')
   .pointAltitude(0)
   .pointRadius(0.02)
-  .pointsMerge(true);
-
+  .pointsMerge(true)
+  .onArcClick((event: any, arc: any) => {
+    this.onArcClicked(arc,event);
+  });
+  
+  
+  
     // Load data
     const airportParse = ([airportId, name, city, country, iata, icao, lat, lng, alt, timezone, dst, tz, type, source]: string[]) => ({
       airportId, name, city, country, iata, icao, lat, lng, alt, timezone, dst, tz, type, source
@@ -123,10 +134,32 @@ export class FlightComponent implements OnInit {
         .arcsData(filteredRoutes);
     });
   }
+  onArcClicked(event: any, arc: any): void {
+    console.log('Arc clicked:', arc);
+    this.storeArcLocally(new Arc(arc.airlineId, arc.airline, arc.srcAirport, arc.dstAirport, arc.equipment));
+    console.log('Arc ID:', arc.airlineId);
+    this.router.navigate(['/detail', arc.airlineId]);
+  }
 
   onSubmit(): void {
     if (this.countryName !== "") {
       this.initializeGlobe(this.countryName);
     }
+  }
+
+  getStoredArcs(): Arc[] {
+    // Retrieve stored arcs from local storage
+    return JSON.parse(localStorage.getItem("storedArcs") || "[]");
+  }
+
+  storeArcLocally(arc: Arc): void {
+    // Retrieve existing arcs from local storage or initialize an empty array
+    let storedArcs: Arc[] = JSON.parse(localStorage.getItem("storedArcs") || "[]");
+
+    // Push the new arc to the array
+    storedArcs.push(arc);
+
+    // Store the updated array back to local storage
+    localStorage.setItem("storedArcs", JSON.stringify(storedArcs));
   }
 }

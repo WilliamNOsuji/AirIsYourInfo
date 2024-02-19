@@ -3,8 +3,8 @@
   <form (ngSubmit)="onSubmit()">
     <input type="text" [(ngModel)]="countryName" name="countryName" 
     class="form-control" 
-    placeholder="Name of the Country" 
-    style="padding: 15px 30px;font-size: 18px;">
+    placeholder="Name of the Country (ex: Canada, United States)" 
+    style="padding: 15px 30px;font-size: 18px; width: 400px;">
     <button type="submit" class="button big-button">Search for Flights</button>
   </form>
   <button class="button big-button" [routerLink]="['/contact']">Contact Page</button>

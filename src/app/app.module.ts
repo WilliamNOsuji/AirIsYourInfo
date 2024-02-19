@@ -27,7 +27,7 @@ import { provideRouter } from '@angular/router';
     RouterModule.forRoot([
       { path: '', redirectTo: '/flight', pathMatch: 'full' },
       { path: 'contact', component: ContactComponent },
-      { path: 'flight/:id', component: DetailComponent },
+      { path: 'detail/:id', component: DetailComponent },
       { path: 'flight', component: FlightComponent },
     ])
   ],
