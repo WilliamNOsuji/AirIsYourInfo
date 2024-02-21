@@ -1,16 +1,19 @@
+import { DestinationInfo } from "./destinationInfo";
+import { SourceInfo } from "./sourceInfo";
+
 export class Arc {
     id : string;
-    source : string;
-    destination : string;
+    sourceInfo : SourceInfo[];
+    destinationInfo : DestinationInfo[];
     airline : string;
     equipment : string;
 
 
-    constructor(id:string, airline:string, source:string, destination:string, equipment : string){
+    constructor(id:string, airline:string, source:SourceInfo[], destination:DestinationInfo[], equipment : string){
         this.id = id;
         this.airline = airline;
-        this.source = source;
-        this.destination = destination;
+        this.sourceInfo = source;
+        this.destinationInfo = destination;
         this.equipment = equipment;
     }
 }
