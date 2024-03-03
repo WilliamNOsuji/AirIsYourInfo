@@ -68,7 +68,7 @@ export class FlightComponent implements OnInit {
 
   private initializeGlobe(countryName : string): void {
     localStorage.clear();
-    const OPACITY: number = 0.50;
+    const OPACITY: number = 0.20;
 
     const globeContainer: HTMLElement | null = document.getElementById('globeViz');
     if (!globeContainer) {
